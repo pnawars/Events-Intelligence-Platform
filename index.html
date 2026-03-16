@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Events Europe | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #ec4899;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --card-hover: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header & Hero */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 24px;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: var(--card-hover);
+        }
+
+        .stat-card h3 {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Filters */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: var(--glass-bg);
+            padding: 1rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        input, select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        /* Event Grid */
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.3);
+            transform: scale(1.02);
+        }
+
+        .event-date {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .event-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-desc {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .view-btn {
+            display: inline-block;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: linear-gradient(to right, #8b5cf6, #7c3aed);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        .view-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading Spinner */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: block;
+            margin: 2rem auto;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">AI EVENTS EUROPE</div>
+            <div style="color: var(--text-secondary); font-size: 0.875rem;">LIVE DISCOVERY ENGINE</div>
+        </header>
+
+        <section class="hero">
+            <h1>AI Events Intelligence Platform</h1>
+            <p>Predicting and tracking the next generation of technological gatherings across Europe.</p>
+        </section>
+
+        <div id="stats" class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Events</h3>
+                <div class="value" id="total-count">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Countries</h3>
+                <div class="value" id="country-count">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Unique Cities</h3>
+                <div class="value" id="city-count">-</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search events, cities, topics...">
+            </div>
+            <div style="min-width: 150px;">
+                <select id="industry-filter">
+                    <option value="">All Industries</option>
+                    <option value="AI">AI</option>
+                    <option value="Fintech">Fintech</option>
+                    <option value="Gaming">Gaming</option>
+                    <option value="DNB">DNB</option>
+                    <option value="Ecommerce">Ecommerce</option>
+                </select>
+            </div>
+            <div style="min-width: 150px;">
+                <select id="country-filter">
+                    <option value="">All Countries</option>
+                </select>
+            </div>
+            <div style="min-width: 150px;">
+                <select id="month-filter">
+                    <option value="">All Months</option>
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+            <div style="min-width: 120px;">
+                <select id="date-filter">
+                    <option value="all">Any Date</option>
+                    <option value="future">Upcoming</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="loader" class="loader"></div>
+        <div id="events-grid" class="event-grid"></div>
+    </div>
+
+    <script>
+        let allEvents = [];
+
+        async function init() {
+            try {
+                // Fetch Stats
+                const statsRes = await fetch('/api/stats');
+                const stats = await statsRes.json();
+                document.getElementById('total-count').innerText = stats.total;
+                document.getElementById('country-count').innerText = stats.countries.length;
+                document.getElementById('city-count').innerText = stats.cities.length;
+
+                // Populate Industry Filter
+                const industryFilter = document.getElementById('industry-filter');
+                stats.industries.forEach(i => {
+                    const opt = document.createElement('option');
+                    opt.value = i.industry;
+                    opt.innerText = i.industry;
+                    industryFilter.appendChild(opt);
+                });
+
+                // Populate Country Filter
+                const countryFilter = document.getElementById('country-filter');
+                stats.countries.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.country;
+                    opt.innerText = c.country;
+                    countryFilter.appendChild(opt);
+                });
+
+                // Fetch Events
+                const eventsRes = await fetch('/api/events');
+                allEvents = await eventsRes.json();
+                
+                renderEvents(allEvents);
+                document.getElementById('loader').style.display = 'none';
+            } catch (err) {
+                console.error("Failed to load dashboard data:", err);
+            }
+        }
+
+        function renderEvents(events) {
+            const grid = document.getElementById('events-grid');
+            grid.innerHTML = '';
+            
+            if (events.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">No events found matching your filter.</div>';
+                return;
+            }
+
+            events.forEach((event, index) => {
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.style.animation = `fadeInUp 0.5s ease-out forwards ${index * 0.05}s`;
+                card.style.opacity = '0';
+                
+                const eventDate = new Date(event.event_date);
+                const formattedDate = eventDate.toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                });
+
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div class="event-date">${formattedDate}</div>
+                        <div style="background: rgba(236, 72, 153, 0.1); color: var(--accent-secondary); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">${event.industry || 'AI'}</div>
+                    </div>
+                    <div class="event-title">${event.event_name}</div>
+                    <div class="event-location">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                        </svg>
+                        ${event.city}, ${event.country}
+                    </div>
+                    <div class="event-desc">${event.description || 'No description available for this event.'}</div>
+                    <a href="${event.source_url}" target="_blank" class="view-btn">Official Website</a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filtering Logic
+        function handleFilters() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const industryTerm = document.getElementById('industry-filter').value;
+            const countryTerm = document.getElementById('country-filter').value;
+            const monthTerm = document.getElementById('month-filter').value;
+            const dateTerm = document.getElementById('date-filter').value;
+
+            const filtered = allEvents.filter(e => {
+                const eDate = new Date(e.event_date);
+                
+                const matchesSearch = e.event_name.toLowerCase().includes(searchTerm) || 
+                                    e.city.toLowerCase().includes(searchTerm) || 
+                                    (e.description && e.description.toLowerCase().includes(searchTerm)) ||
+                                    (e.industry && e.industry.toLowerCase().includes(searchTerm));
+                
+                const matchesIndustry = industryTerm === "" || e.industry === industryTerm;
+                const matchesCountry = countryTerm === "" || e.country === countryTerm;
+                const matchesMonth = monthTerm === "" || eDate.getMonth() == parseInt(monthTerm);
+                
+                let matchesDate = true;
+                if (dateTerm === 'future') {
+                    matchesDate = eDate >= new Date();
+                }
+
+                return matchesSearch && matchesIndustry && matchesCountry && matchesMonth && matchesDate;
+            });
+
+            renderEvents(filtered);
+        }
+
+        document.getElementById('search').addEventListener('input', handleFilters);
+        document.getElementById('industry-filter').addEventListener('change', handleFilters);
+        document.getElementById('country-filter').addEventListener('change', handleFilters);
+        document.getElementById('month-filter').addEventListener('change', handleFilters);
+        document.getElementById('date-filter').addEventListener('change', handleFilters);
+
+        init();
+    </script>
+</body>
+</html>
