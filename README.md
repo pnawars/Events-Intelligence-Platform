@@ -7,9 +7,6 @@ This project contains an Antigravity agent that automatically discovers upcoming
 [![Gemini AI](https://img.shields.io/badge/AI-Gemini%202.0-orange.svg)](https://deepmind.google/technologies/gemini/)
 
 An autonomous AI-driven discovery engine designed to track, categorize, and visualize the most impactful Artificial Intelligence events across Europe. Leveraging Gemini 2.0 with Google Search Grounding, this platform eliminates the manual effort of scouting for networking opportunities, hackathons, and conferences.
-
-![Platform Screenshot](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/docs/dashboard_preview.png) *(Replace with your local screenshot after pushing)*
-
 ##  Vision
 The **AI Events Intelligence Platform** isn't just a list; it's a predictive discovery tool. It autonomously scouts the live web to find niche gatherings in specialized sectors like **FinTech, LegalTech, Healthcare, and Gaming**, ensuring that developers, founders, and investors stay ahead of the curve.
 
